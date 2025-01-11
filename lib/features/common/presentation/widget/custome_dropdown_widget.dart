@@ -18,9 +18,8 @@ class SimpleDropdown extends StatelessWidget {
     return CustomDropdown<dynamic>(
       hintText: 'Select job role',
       items: items,
-      initialItem: items[0],
+      // initialItem: items[0],
       onChanged: (value) {
-        log("the value is $value");
         if (onChange != null) {
           onChange!(value!);
         }

@@ -86,26 +86,42 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
+            log("the state data is ${state.data}");
             return SingleChildScrollView(
               child: Center(
                   child: Column(
                 children: [
-                  SimpleDropdown(
-                    items: state.data == null
-                        ? []
-                        : state.data!.map((mosque) => mosque.name).toList(),
-                    onChange: (value) {
-                      context.read<HomeCubit>().changeEmail(value);
-                    },
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10, left: 10),
+                          child: SimpleDropdown(
+                            items: state.data == null
+                                ? []
+                                : state.data!.map((mosque) => mosque.name).toList(),
+                            onChange: (value) {
+                              context.read<HomeCubit>().changeEmail(value);
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10, left: 10),
+                          child: SimpleDropdown(
+                            items: state.data == null
+                                ? []
+                                : state.data!.map((mosque) => mosque.name).toList(),
+                            onChange: (value) {
+                              context.read<HomeCubit>().changeEmail(value);
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  TextField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter your name',
-                    ),
-                    onChanged: (value) {
-                      context.read<HomeCubit>().changeEmail(value);
-                    },
-                  ),
+                  Text(state.email ?? ''),
                   Text(state.email ?? ''),
                 ],
               )),
