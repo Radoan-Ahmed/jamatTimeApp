@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:flutter/material.dart';
 
@@ -15,9 +13,11 @@ class SimpleDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List<String> sortedData = List.from((items
+              .map((e) =>  e.name)).toList());
     return CustomDropdown<dynamic>(
       hintText: 'Select job role',
-      items: items,
+      items: sortedData,
       // initialItem: items[0],
       onChanged: (value) {
         if (onChange != null) {

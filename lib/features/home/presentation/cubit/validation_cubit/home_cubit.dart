@@ -12,6 +12,10 @@ class HomeCubit extends Cubit<HomeState> {
    emit(state.copyWith(email: email));
   }
 
+  void changePassword(String password){
+   emit(state.copyWith(password: password));
+  }
+
   void changeMosqueDropdownList(List<Datum> data){
     emit(state.copyWith(data: data));
   }

@@ -97,11 +97,14 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 10, left: 10),
                           child: SimpleDropdown(
-                            items: state.data == null
-                                ? []
-                                : state.data!.map((mosque) => mosque.name).toList(),
+                            items: state.data == null ? [] : state.data!,
+                            // state.data!.map((mosque) => mosque.name).toList(),
                             onChange: (value) {
                               context.read<HomeCubit>().changeEmail(value);
+                              final int index1 = state.data!
+                                  .indexWhere(((e) => (e.name) == value));
+                              context.read<HomeCubit>().changePassword(
+                                  state.data![index1].location.toString());
                             },
                           ),
                         ),
@@ -112,9 +115,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SimpleDropdown(
                             items: state.data == null
                                 ? []
-                                : state.data!.map((mosque) => mosque.name).toList(),
+                                : state.data!,
+                                // state.data!
+                                //     .map((mosque) => mosque.name)
+                                //     .toList(),
                             onChange: (value) {
                               context.read<HomeCubit>().changeEmail(value);
+                              final int index1 = state.data!
+                                  .indexWhere(((e) => (e.name) == value));
+                              context.read<HomeCubit>().changePassword(
+                                  state.data![index1].location.toString());
                             },
                           ),
                         ),
@@ -122,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Text(state.email ?? ''),
-                  Text(state.email ?? ''),
+                  Text(state.password ?? ''),
                 ],
               )),
             );
