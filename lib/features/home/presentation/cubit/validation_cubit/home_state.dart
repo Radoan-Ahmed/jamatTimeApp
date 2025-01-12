@@ -7,7 +7,8 @@ class HomeState with _$HomeState {
   const factory HomeState({
     String? mosque,
     String? location,
-    List<Datum>? data,
+    List<Datum>? mosqueData,
+    List<Datum>? locationData,
   }) = _HomeState;
 }
 

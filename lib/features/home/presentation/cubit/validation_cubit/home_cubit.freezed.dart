@@ -18,7 +18,8 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$HomeState {
   String? get mosque => throw _privateConstructorUsedError;
   String? get location => throw _privateConstructorUsedError;
-  List<Datum>? get data => throw _privateConstructorUsedError;
+  List<Datum>? get mosqueData => throw _privateConstructorUsedError;
+  List<Datum>? get locationData => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -30,7 +31,11 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({String? mosque, String? location, List<Datum>? data});
+  $Res call(
+      {String? mosque,
+      String? location,
+      List<Datum>? mosqueData,
+      List<Datum>? locationData});
 }
 
 /// @nodoc
@@ -48,7 +53,8 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   $Res call({
     Object? mosque = freezed,
     Object? location = freezed,
-    Object? data = freezed,
+    Object? mosqueData = freezed,
+    Object? locationData = freezed,
   }) {
     return _then(_value.copyWith(
       mosque: freezed == mosque
@@ -59,9 +65,13 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
-      data: freezed == data
-          ? _value.data
-          : data // ignore: cast_nullable_to_non_nullable
+      mosqueData: freezed == mosqueData
+          ? _value.mosqueData
+          : mosqueData // ignore: cast_nullable_to_non_nullable
+              as List<Datum>?,
+      locationData: freezed == locationData
+          ? _value.locationData
+          : locationData // ignore: cast_nullable_to_non_nullable
               as List<Datum>?,
     ) as $Val);
   }
@@ -75,7 +85,11 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? mosque, String? location, List<Datum>? data});
+  $Res call(
+      {String? mosque,
+      String? location,
+      List<Datum>? mosqueData,
+      List<Datum>? locationData});
 }
 
 /// @nodoc
@@ -91,7 +105,8 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   $Res call({
     Object? mosque = freezed,
     Object? location = freezed,
-    Object? data = freezed,
+    Object? mosqueData = freezed,
+    Object? locationData = freezed,
   }) {
     return _then(_$HomeStateImpl(
       mosque: freezed == mosque
@@ -102,9 +117,13 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value.location
           : location // ignore: cast_nullable_to_non_nullable
               as String?,
-      data: freezed == data
-          ? _value._data
-          : data // ignore: cast_nullable_to_non_nullable
+      mosqueData: freezed == mosqueData
+          ? _value._mosqueData
+          : mosqueData // ignore: cast_nullable_to_non_nullable
+              as List<Datum>?,
+      locationData: freezed == locationData
+          ? _value._locationData
+          : locationData // ignore: cast_nullable_to_non_nullable
               as List<Datum>?,
     ));
   }
@@ -113,26 +132,41 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl({this.mosque, this.location, final List<Datum>? data})
-      : _data = data;
+  const _$HomeStateImpl(
+      {this.mosque,
+      this.location,
+      final List<Datum>? mosqueData,
+      final List<Datum>? locationData})
+      : _mosqueData = mosqueData,
+        _locationData = locationData;
 
   @override
   final String? mosque;
   @override
   final String? location;
-  final List<Datum>? _data;
+  final List<Datum>? _mosqueData;
   @override
-  List<Datum>? get data {
-    final value = _data;
+  List<Datum>? get mosqueData {
+    final value = _mosqueData;
     if (value == null) return null;
-    if (_data is EqualUnmodifiableListView) return _data;
+    if (_mosqueData is EqualUnmodifiableListView) return _mosqueData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<Datum>? _locationData;
+  @override
+  List<Datum>? get locationData {
+    final value = _locationData;
+    if (value == null) return null;
+    if (_locationData is EqualUnmodifiableListView) return _locationData;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'HomeState(mosque: $mosque, location: $location, data: $data)';
+    return 'HomeState(mosque: $mosque, location: $location, mosqueData: $mosqueData, locationData: $locationData)';
   }
 
   @override
@@ -143,12 +177,19 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.mosque, mosque) || other.mosque == mosque) &&
             (identical(other.location, location) ||
                 other.location == location) &&
-            const DeepCollectionEquality().equals(other._data, _data));
+            const DeepCollectionEquality()
+                .equals(other._mosqueData, _mosqueData) &&
+            const DeepCollectionEquality()
+                .equals(other._locationData, _locationData));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, mosque, location,
-      const DeepCollectionEquality().hash(_data));
+  int get hashCode => Object.hash(
+      runtimeType,
+      mosque,
+      location,
+      const DeepCollectionEquality().hash(_mosqueData),
+      const DeepCollectionEquality().hash(_locationData));
 
   @JsonKey(ignore: true)
   @override
@@ -161,14 +202,17 @@ abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {final String? mosque,
       final String? location,
-      final List<Datum>? data}) = _$HomeStateImpl;
+      final List<Datum>? mosqueData,
+      final List<Datum>? locationData}) = _$HomeStateImpl;
 
   @override
   String? get mosque;
   @override
   String? get location;
   @override
-  List<Datum>? get data;
+  List<Datum>? get mosqueData;
+  @override
+  List<Datum>? get locationData;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

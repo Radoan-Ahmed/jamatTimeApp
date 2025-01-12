@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jamat_app/core/dependency/dependency.dart';
 import 'package:jamat_app/core/navigation/route_name.dart';
+import 'package:jamat_app/features/home/domain/usecase/location_dropdown_usecase.dart';
 import 'package:jamat_app/features/home/domain/usecase/mosque_dropdown_usecase.dart';
-import 'package:jamat_app/features/home/presentation/cubit/mosque_dropdown_cubit.dart';
+import 'package:jamat_app/features/home/presentation/cubit/location_api_cubit/location_dropdown_cubit.dart';
+import 'package:jamat_app/features/home/presentation/cubit/mosque_api_cubit/mosque_dropdown_cubit.dart';
 import 'package:jamat_app/features/home/presentation/cubit/validation_cubit/home_cubit.dart';
 import 'package:jamat_app/features/home/presentation/screen/home_screen.dart';
 
@@ -33,6 +35,10 @@ class RouteConfig{
             BlocProvider(
               create: (context) =>
                   MosqueDropdownCubit(usecase: sl<MosqueDropdownUsecase>()),
+            ),
+            BlocProvider(
+              create: (context) =>
+                  LocationDropdownCubit(usecase: sl<LocationDropdownUsecase>()),
             ),
           ],
           child: const HomeScreen(),

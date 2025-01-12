@@ -17,7 +17,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void changeMosqueDropdownList(List<Datum> data){
-    emit(state.copyWith(data: data));
+    emit(state.copyWith(mosqueData: data));
+  }
+
+  void changeLocationDropdownList(List<Datum> data){
+    emit(state.copyWith(locationData: data));
   }
 
 }
