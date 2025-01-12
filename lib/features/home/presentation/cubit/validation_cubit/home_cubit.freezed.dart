@@ -16,8 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
-  String? get email => throw _privateConstructorUsedError;
-  String? get password => throw _privateConstructorUsedError;
+  String? get mosque => throw _privateConstructorUsedError;
+  String? get location => throw _privateConstructorUsedError;
   List<Datum>? get data => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -30,7 +30,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({String? email, String? password, List<Datum>? data});
+  $Res call({String? mosque, String? location, List<Datum>? data});
 }
 
 /// @nodoc
@@ -46,18 +46,18 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = freezed,
-    Object? password = freezed,
+    Object? mosque = freezed,
+    Object? location = freezed,
     Object? data = freezed,
   }) {
     return _then(_value.copyWith(
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      mosque: freezed == mosque
+          ? _value.mosque
+          : mosque // ignore: cast_nullable_to_non_nullable
               as String?,
-      password: freezed == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
               as String?,
       data: freezed == data
           ? _value.data
@@ -75,7 +75,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? email, String? password, List<Datum>? data});
+  $Res call({String? mosque, String? location, List<Datum>? data});
 }
 
 /// @nodoc
@@ -89,18 +89,18 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? email = freezed,
-    Object? password = freezed,
+    Object? mosque = freezed,
+    Object? location = freezed,
     Object? data = freezed,
   }) {
     return _then(_$HomeStateImpl(
-      email: freezed == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
+      mosque: freezed == mosque
+          ? _value.mosque
+          : mosque // ignore: cast_nullable_to_non_nullable
               as String?,
-      password: freezed == password
-          ? _value.password
-          : password // ignore: cast_nullable_to_non_nullable
+      location: freezed == location
+          ? _value.location
+          : location // ignore: cast_nullable_to_non_nullable
               as String?,
       data: freezed == data
           ? _value._data
@@ -113,13 +113,13 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl({this.email, this.password, final List<Datum>? data})
+  const _$HomeStateImpl({this.mosque, this.location, final List<Datum>? data})
       : _data = data;
 
   @override
-  final String? email;
+  final String? mosque;
   @override
-  final String? password;
+  final String? location;
   final List<Datum>? _data;
   @override
   List<Datum>? get data {
@@ -132,7 +132,7 @@ class _$HomeStateImpl implements _HomeState {
 
   @override
   String toString() {
-    return 'HomeState(email: $email, password: $password, data: $data)';
+    return 'HomeState(mosque: $mosque, location: $location, data: $data)';
   }
 
   @override
@@ -140,15 +140,15 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.password, password) ||
-                other.password == password) &&
+            (identical(other.mosque, mosque) || other.mosque == mosque) &&
+            (identical(other.location, location) ||
+                other.location == location) &&
             const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType, email, password, const DeepCollectionEquality().hash(_data));
+  int get hashCode => Object.hash(runtimeType, mosque, location,
+      const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -159,14 +159,14 @@ class _$HomeStateImpl implements _HomeState {
 
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
-      {final String? email,
-      final String? password,
+      {final String? mosque,
+      final String? location,
       final List<Datum>? data}) = _$HomeStateImpl;
 
   @override
-  String? get email;
+  String? get mosque;
   @override
-  String? get password;
+  String? get location;
   @override
   List<Datum>? get data;
   @override

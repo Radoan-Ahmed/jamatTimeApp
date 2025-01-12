@@ -9,11 +9,17 @@ MosqueDropdownRequestModel mosqueDropdownRequestModelFromJson(String str) => Mos
 String mosqueDropdownRequestModelToJson(MosqueDropdownRequestModel data) => json.encode(data.toJson());
 
 class MosqueDropdownRequestModel {
-    MosqueDropdownRequestModel();
+    int? oid;
+
+    MosqueDropdownRequestModel({
+        this.oid,
+    });
 
     factory MosqueDropdownRequestModel.fromJson(Map<String, dynamic> json) => MosqueDropdownRequestModel(
+        oid: json["oid"],
     );
 
     Map<String, dynamic> toJson() => {
+        "oid": oid,
     };
 }

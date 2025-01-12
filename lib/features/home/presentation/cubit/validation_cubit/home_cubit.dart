@@ -8,12 +8,12 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(const HomeState());
 
-  void changeEmail(String email){
-   emit(state.copyWith(email: email));
+  void changeMosque(String mosque){
+   emit(state.copyWith(mosque: mosque));
   }
 
-  void changePassword(String password){
-   emit(state.copyWith(password: password));
+  void changeLocation(String location){
+   emit(state.copyWith(location: location));
   }
 
   void changeMosqueDropdownList(List<Datum> data){

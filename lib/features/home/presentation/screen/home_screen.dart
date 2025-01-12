@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,14 +19,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late MosqueDropdownCubit mosqueDropdownCubit;
-  callingApi() async {
-    await mosqueDropdownCubit.requestMosqueDropdown();
+  callingApi(int? oid) async {
+    if(oid != null){
+      mosqueDropdownCubit.requestMosqueDropdown(oid);
+    }else{
+      mosqueDropdownCubit.requestMosqueDropdown(oid);
+    }
   }
 
   @override
   void initState() {
     mosqueDropdownCubit = context.read<MosqueDropdownCubit>();
-    callingApi();
+    callingApi(null);
     super.initState();
   }
 
@@ -38,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
           listener: (context, state) {
             state.maybeWhen(
               success: (success) {
-                log("enter into success block ${json.encode(success.data)}");
                 mosqueList = success.data ?? [];
                 context.read<HomeCubit>().changeMosqueDropdownList(mosqueList);
                 // log("the mosque list is $mosqueList");
@@ -86,7 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            log("the state data is ${state.data}");
             return SingleChildScrollView(
               child: Center(
                   child: Column(
@@ -97,14 +100,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 10, left: 10),
                           child: SimpleDropdown(
-                            items: state.data == null ? [] : state.data!,
-                            // state.data!.map((mosque) => mosque.name).toList(),
+                            hintText: "Select Location",
+                            items: state.data == null ? [] :
+                            state.data!.map((mosque) => mosque.location).toList(),
                             onChange: (value) {
-                              context.read<HomeCubit>().changeEmail(value);
+                              context.read<HomeCubit>().changeLocation(value);
                               final int index1 = state.data!
-                                  .indexWhere(((e) => (e.name) == value));
-                              context.read<HomeCubit>().changePassword(
-                                  state.data![index1].location.toString());
+                                  .indexWhere(((e) => (e.location) == value));
+
+                              callingApi(state.data![index1].oid);
+                              // context.read<HomeCubit>().changeMosque(
+                              //     state.data![index1].oid.toString());
                             },
                           ),
                         ),
@@ -115,24 +121,24 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: SimpleDropdown(
                             items: state.data == null
                                 ? []
-                                : state.data!,
-                                // state.data!
-                                //     .map((mosque) => mosque.name)
-                                //     .toList(),
+                                :
+                                state.data!
+                                    .map((mosque) => mosque.name)
+                                    .toList(),
                             onChange: (value) {
-                              context.read<HomeCubit>().changeEmail(value);
-                              final int index1 = state.data!
-                                  .indexWhere(((e) => (e.name) == value));
-                              context.read<HomeCubit>().changePassword(
-                                  state.data![index1].location.toString());
+                              context.read<HomeCubit>().changeMosque(value);
+                              // final int index1 = state.data!
+                              //     .indexWhere(((e) => (e.name) == value));
+                              // context.read<HomeCubit>().changeLocation(
+                              //     state.data![index1].location.toString());
                             },
                           ),
                         ),
                       ),
                     ],
                   ),
-                  Text(state.email ?? ''),
-                  Text(state.password ?? ''),
+                  Text(state.mosque ?? ''),
+                  Text(state.location ?? ''),
                 ],
               )),
             );

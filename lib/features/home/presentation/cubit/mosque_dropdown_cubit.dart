@@ -14,13 +14,13 @@ class MosqueDropdownCubit extends Cubit<MosqueDropdownState> {
 
   MosqueDropdownCubit({required this.usecase}) : super(const MosqueDropdownState.initial());
 
-  Future<void> requestMosqueDropdown() async {
+  Future<void> requestMosqueDropdown(int? oid) async {
     log("enter initial cubit");
     emit(const MosqueDropdownState.initial());
 
     try {
       log("enter try block");
-      final response = await usecase(MosqueDropdownRequestModel());
+      final response = await usecase(MosqueDropdownRequestModel(oid: oid));
       log("the response is $response");
       emit(MosqueDropdownState.success(model: response));
     } catch (e, s) {

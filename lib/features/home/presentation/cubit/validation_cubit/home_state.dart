@@ -5,8 +5,8 @@ part of 'home_cubit.dart';
 class HomeState with _$HomeState {
 
   const factory HomeState({
-    String? email,
-    String? password,
+    String? mosque,
+    String? location,
     List<Datum>? data,
   }) = _HomeState;
 }
