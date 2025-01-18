@@ -20,6 +20,7 @@ mixin _$HomeState {
   String? get location => throw _privateConstructorUsedError;
   List<Datum>? get mosqueData => throw _privateConstructorUsedError;
   List<Datum>? get locationData => throw _privateConstructorUsedError;
+  List<Rows>? get jamatTimeData => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -35,7 +36,8 @@ abstract class $HomeStateCopyWith<$Res> {
       {String? mosque,
       String? location,
       List<Datum>? mosqueData,
-      List<Datum>? locationData});
+      List<Datum>? locationData,
+      List<Rows>? jamatTimeData});
 }
 
 /// @nodoc
@@ -55,6 +57,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? location = freezed,
     Object? mosqueData = freezed,
     Object? locationData = freezed,
+    Object? jamatTimeData = freezed,
   }) {
     return _then(_value.copyWith(
       mosque: freezed == mosque
@@ -73,6 +76,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.locationData
           : locationData // ignore: cast_nullable_to_non_nullable
               as List<Datum>?,
+      jamatTimeData: freezed == jamatTimeData
+          ? _value.jamatTimeData
+          : jamatTimeData // ignore: cast_nullable_to_non_nullable
+              as List<Rows>?,
     ) as $Val);
   }
 }
@@ -89,7 +96,8 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       {String? mosque,
       String? location,
       List<Datum>? mosqueData,
-      List<Datum>? locationData});
+      List<Datum>? locationData,
+      List<Rows>? jamatTimeData});
 }
 
 /// @nodoc
@@ -107,6 +115,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? location = freezed,
     Object? mosqueData = freezed,
     Object? locationData = freezed,
+    Object? jamatTimeData = freezed,
   }) {
     return _then(_$HomeStateImpl(
       mosque: freezed == mosque
@@ -125,6 +134,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._locationData
           : locationData // ignore: cast_nullable_to_non_nullable
               as List<Datum>?,
+      jamatTimeData: freezed == jamatTimeData
+          ? _value._jamatTimeData
+          : jamatTimeData // ignore: cast_nullable_to_non_nullable
+              as List<Rows>?,
     ));
   }
 }
@@ -136,9 +149,11 @@ class _$HomeStateImpl implements _HomeState {
       {this.mosque,
       this.location,
       final List<Datum>? mosqueData,
-      final List<Datum>? locationData})
+      final List<Datum>? locationData,
+      final List<Rows>? jamatTimeData})
       : _mosqueData = mosqueData,
-        _locationData = locationData;
+        _locationData = locationData,
+        _jamatTimeData = jamatTimeData;
 
   @override
   final String? mosque;
@@ -164,9 +179,19 @@ class _$HomeStateImpl implements _HomeState {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<Rows>? _jamatTimeData;
+  @override
+  List<Rows>? get jamatTimeData {
+    final value = _jamatTimeData;
+    if (value == null) return null;
+    if (_jamatTimeData is EqualUnmodifiableListView) return _jamatTimeData;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'HomeState(mosque: $mosque, location: $location, mosqueData: $mosqueData, locationData: $locationData)';
+    return 'HomeState(mosque: $mosque, location: $location, mosqueData: $mosqueData, locationData: $locationData, jamatTimeData: $jamatTimeData)';
   }
 
   @override
@@ -180,7 +205,9 @@ class _$HomeStateImpl implements _HomeState {
             const DeepCollectionEquality()
                 .equals(other._mosqueData, _mosqueData) &&
             const DeepCollectionEquality()
-                .equals(other._locationData, _locationData));
+                .equals(other._locationData, _locationData) &&
+            const DeepCollectionEquality()
+                .equals(other._jamatTimeData, _jamatTimeData));
   }
 
   @override
@@ -189,7 +216,8 @@ class _$HomeStateImpl implements _HomeState {
       mosque,
       location,
       const DeepCollectionEquality().hash(_mosqueData),
-      const DeepCollectionEquality().hash(_locationData));
+      const DeepCollectionEquality().hash(_locationData),
+      const DeepCollectionEquality().hash(_jamatTimeData));
 
   @JsonKey(ignore: true)
   @override
@@ -203,7 +231,8 @@ abstract class _HomeState implements HomeState {
       {final String? mosque,
       final String? location,
       final List<Datum>? mosqueData,
-      final List<Datum>? locationData}) = _$HomeStateImpl;
+      final List<Datum>? locationData,
+      final List<Rows>? jamatTimeData}) = _$HomeStateImpl;
 
   @override
   String? get mosque;
@@ -213,6 +242,8 @@ abstract class _HomeState implements HomeState {
   List<Datum>? get mosqueData;
   @override
   List<Datum>? get locationData;
+  @override
+  List<Rows>? get jamatTimeData;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

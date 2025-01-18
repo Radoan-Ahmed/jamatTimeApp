@@ -9,6 +9,7 @@ class HomeState with _$HomeState {
     String? location,
     List<Datum>? mosqueData,
     List<Datum>? locationData,
+    List<Rows>? jamatTimeData,
   }) = _HomeState;
 }
 
