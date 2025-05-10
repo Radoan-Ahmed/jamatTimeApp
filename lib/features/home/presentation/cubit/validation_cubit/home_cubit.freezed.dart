@@ -19,6 +19,10 @@ mixin _$HomeState {
   String? get email => throw _privateConstructorUsedError;
   String? get password => throw _privateConstructorUsedError;
   List<Datum>? get data => throw _privateConstructorUsedError;
+  Map<String, DateTime>? get paresed => throw _privateConstructorUsedError;
+  String? get nextPrayer => throw _privateConstructorUsedError;
+  String? get nextTime => throw _privateConstructorUsedError;
+  Duration? get timeRemaining => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeStateCopyWith<HomeState> get copyWith =>
@@ -30,7 +34,14 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({String? email, String? password, List<Datum>? data});
+  $Res call(
+      {String? email,
+      String? password,
+      List<Datum>? data,
+      Map<String, DateTime>? paresed,
+      String? nextPrayer,
+      String? nextTime,
+      Duration? timeRemaining});
 }
 
 /// @nodoc
@@ -49,6 +60,10 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
     Object? email = freezed,
     Object? password = freezed,
     Object? data = freezed,
+    Object? paresed = freezed,
+    Object? nextPrayer = freezed,
+    Object? nextTime = freezed,
+    Object? timeRemaining = freezed,
   }) {
     return _then(_value.copyWith(
       email: freezed == email
@@ -63,6 +78,22 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
           ? _value.data
           : data // ignore: cast_nullable_to_non_nullable
               as List<Datum>?,
+      paresed: freezed == paresed
+          ? _value.paresed
+          : paresed // ignore: cast_nullable_to_non_nullable
+              as Map<String, DateTime>?,
+      nextPrayer: freezed == nextPrayer
+          ? _value.nextPrayer
+          : nextPrayer // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nextTime: freezed == nextTime
+          ? _value.nextTime
+          : nextTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+      timeRemaining: freezed == timeRemaining
+          ? _value.timeRemaining
+          : timeRemaining // ignore: cast_nullable_to_non_nullable
+              as Duration?,
     ) as $Val);
   }
 }
@@ -75,7 +106,14 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? email, String? password, List<Datum>? data});
+  $Res call(
+      {String? email,
+      String? password,
+      List<Datum>? data,
+      Map<String, DateTime>? paresed,
+      String? nextPrayer,
+      String? nextTime,
+      Duration? timeRemaining});
 }
 
 /// @nodoc
@@ -92,6 +130,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
     Object? email = freezed,
     Object? password = freezed,
     Object? data = freezed,
+    Object? paresed = freezed,
+    Object? nextPrayer = freezed,
+    Object? nextTime = freezed,
+    Object? timeRemaining = freezed,
   }) {
     return _then(_$HomeStateImpl(
       email: freezed == email
@@ -106,6 +148,22 @@ class __$$HomeStateImplCopyWithImpl<$Res>
           ? _value._data
           : data // ignore: cast_nullable_to_non_nullable
               as List<Datum>?,
+      paresed: freezed == paresed
+          ? _value._paresed
+          : paresed // ignore: cast_nullable_to_non_nullable
+              as Map<String, DateTime>?,
+      nextPrayer: freezed == nextPrayer
+          ? _value.nextPrayer
+          : nextPrayer // ignore: cast_nullable_to_non_nullable
+              as String?,
+      nextTime: freezed == nextTime
+          ? _value.nextTime
+          : nextTime // ignore: cast_nullable_to_non_nullable
+              as String?,
+      timeRemaining: freezed == timeRemaining
+          ? _value.timeRemaining
+          : timeRemaining // ignore: cast_nullable_to_non_nullable
+              as Duration?,
     ));
   }
 }
@@ -113,8 +171,16 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl({this.email, this.password, final List<Datum>? data})
-      : _data = data;
+  const _$HomeStateImpl(
+      {this.email,
+      this.password,
+      final List<Datum>? data,
+      final Map<String, DateTime>? paresed,
+      this.nextPrayer,
+      this.nextTime,
+      this.timeRemaining})
+      : _data = data,
+        _paresed = paresed;
 
   @override
   final String? email;
@@ -130,9 +196,26 @@ class _$HomeStateImpl implements _HomeState {
     return EqualUnmodifiableListView(value);
   }
 
+  final Map<String, DateTime>? _paresed;
+  @override
+  Map<String, DateTime>? get paresed {
+    final value = _paresed;
+    if (value == null) return null;
+    if (_paresed is EqualUnmodifiableMapView) return _paresed;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
+  }
+
+  @override
+  final String? nextPrayer;
+  @override
+  final String? nextTime;
+  @override
+  final Duration? timeRemaining;
+
   @override
   String toString() {
-    return 'HomeState(email: $email, password: $password, data: $data)';
+    return 'HomeState(email: $email, password: $password, data: $data, paresed: $paresed, nextPrayer: $nextPrayer, nextTime: $nextTime, timeRemaining: $timeRemaining)';
   }
 
   @override
@@ -143,12 +226,26 @@ class _$HomeStateImpl implements _HomeState {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.password, password) ||
                 other.password == password) &&
-            const DeepCollectionEquality().equals(other._data, _data));
+            const DeepCollectionEquality().equals(other._data, _data) &&
+            const DeepCollectionEquality().equals(other._paresed, _paresed) &&
+            (identical(other.nextPrayer, nextPrayer) ||
+                other.nextPrayer == nextPrayer) &&
+            (identical(other.nextTime, nextTime) ||
+                other.nextTime == nextTime) &&
+            (identical(other.timeRemaining, timeRemaining) ||
+                other.timeRemaining == timeRemaining));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, email, password, const DeepCollectionEquality().hash(_data));
+      runtimeType,
+      email,
+      password,
+      const DeepCollectionEquality().hash(_data),
+      const DeepCollectionEquality().hash(_paresed),
+      nextPrayer,
+      nextTime,
+      timeRemaining);
 
   @JsonKey(ignore: true)
   @override
@@ -161,7 +258,11 @@ abstract class _HomeState implements HomeState {
   const factory _HomeState(
       {final String? email,
       final String? password,
-      final List<Datum>? data}) = _$HomeStateImpl;
+      final List<Datum>? data,
+      final Map<String, DateTime>? paresed,
+      final String? nextPrayer,
+      final String? nextTime,
+      final Duration? timeRemaining}) = _$HomeStateImpl;
 
   @override
   String? get email;
@@ -169,6 +270,14 @@ abstract class _HomeState implements HomeState {
   String? get password;
   @override
   List<Datum>? get data;
+  @override
+  Map<String, DateTime>? get paresed;
+  @override
+  String? get nextPrayer;
+  @override
+  String? get nextTime;
+  @override
+  Duration? get timeRemaining;
   @override
   @JsonKey(ignore: true)
   _$$HomeStateImplCopyWith<_$HomeStateImpl> get copyWith =>

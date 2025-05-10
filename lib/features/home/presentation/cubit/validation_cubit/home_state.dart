@@ -8,6 +8,10 @@ class HomeState with _$HomeState {
     String? email,
     String? password,
     List<Datum>? data,
+    Map<String, DateTime>? paresed,
+    String? nextPrayer,
+    String? nextTime,
+    Duration? timeRemaining,
   }) = _HomeState;
 }
 
