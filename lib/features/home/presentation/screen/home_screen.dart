@@ -4,7 +4,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jamat_app/core/constant/assets_constant.dart';
 import 'package:jamat_app/core/exceptions/exceptions.dart';
+import 'package:jamat_app/features/common/presentation/widget/custome_dropdown_widget.dart';
+import 'package:jamat_app/features/common/presentation/widget/simple_dropdown_widget.dart';
 import 'package:jamat_app/features/home/data/model/response_model/mosque_model.dart';
 import 'package:jamat_app/features/home/presentation/cubit/global_prayer_time_api_cubit/global_prayer_time_api_cubit.dart';
 import 'package:jamat_app/features/home/presentation/cubit/mosque_dropdown_cubit.dart';
@@ -107,8 +110,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     json.decode(json.encode(success.data?.times));
                 log("the map of time is: ${map}");
                 homeCubit.updatedPrayerState(map);
-                timer = Timer.periodic(const Duration(seconds: 1),
-                    (_) => homeCubit.updatedPrayerState(map));
+                // timer = Timer.periodic(const Duration(seconds: 1),
+                //     (_) => homeCubit.updatedPrayerState(map));
                 // map.forEach((key, value){
                 //   final parts = value.split(" ");
                 //   final timeParts = parts[0].split(":");
@@ -156,57 +159,134 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Home Screen'),
+          leading: const Image(image: AssetImage(AssetsConstant.logo)),
+          title: const Text('Ibadat-Hub'),
         ),
         body: BlocBuilder<HomeCubit, HomeState>(
           builder: (context, state) {
-            return Center(
-              child: Container(
-                height: 200,
-                width: 200,
-                child: Card(
-                  elevation: 4,
-                  child: Column(
-                    children: [
-                      Text("Next Prayer",
-                          style: TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.bold)),
-                      SizedBox(height: 8),
-                      Text(state.nextPrayer??"", style: TextStyle(fontSize: 20)),
-                      SizedBox(height: 6),
-                      Text("Time: ${state.nextTime}", style: TextStyle(fontSize: 18)),
-                      SizedBox(height: 12),
-                      Text("Starts in: ${_formatDuration(state.timeRemaining ?? Duration.zero)}",
-                          style: TextStyle(fontSize: 16, color: Colors.blue)),
-                    ],
-                  ),
+            return SizedBox(
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              child: Center(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // SizedBox(
+                    //   height: 900,
+                    // ),
+                    CustomDropdown(
+                      items: [1, 2, 3],
+                      itemLabel: (item) => item.toString(),
+                      value: mosqueList.isNotEmpty ? mosqueList[0] : null,
+                      onChanged: (value) {},
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Container(
+                        height: 120,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Color(0xfff0B806F),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "${state.nextPrayer} Prayer",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "${state.nextTime}",
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "time left, ${_formatDuration(state.timeRemaining ?? Duration.zero)}",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Center(
+                              child: Text("Fajr"),
+                            ),
+                          ),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Center(
+                              child: Text("Fajr"),
+                            ),
+                          ),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Center(
+                              child: Text("Fajr"),
+                            ),
+                          ),
+                          Container(
+                            height: 30,
+                            width: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: const Center(
+                              child: Text("Fajr"),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
-            // return SingleChildScrollView(
-            //   child: Center(
-            //       child: Column(
-            //     children: [
-            //       SimpleDropdown(
-            //         items: state.data == null
-            //             ? []
-            //             : state.data!.map((mosque) => mosque.name).toList(),
-            //         onChange: (value) {
-            //           homeCubit.changeEmail(value);
-            //         },
-            //       ),
-            //       TextField(
-            //         decoration: const InputDecoration(
-            //           hintText: 'Enter your name',
-            //         ),
-            //         onChanged: (value) {
-            //           homeCubit.changeEmail(value);
-            //         },
-            //       ),
-            //       Text(state.email ?? ''),
-            //     ],
-            //   )),
-            // );
           },
         ),
       ),
