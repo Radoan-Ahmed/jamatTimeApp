@@ -1,94 +1,82 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:jamat_app/core/navigation/route_name.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
-  const CustomBottomNavigation({super.key});
+  final Function(int) onTabSelected;
+  final int currentIndex;
+
+  const CustomBottomNavigation({
+    super.key,
+    required this.onTabSelected,
+    required this.currentIndex,
+  });
 
   @override
   State<CustomBottomNavigation> createState() => _CustomBottomNavigationState();
 }
 
 class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
-  int selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(10.0),
-        topRight: Radius.circular(10.0),
-      ),
-      child: SizedBox(
-        height: 70,
-        child: BottomNavigationBar(
-          elevation: 15,
-          backgroundColor: const Color(0xff0079B8),
-          items: [
-            BottomNavigationBarItem(
-              icon: bottomIcon("assets/images/icon_dashboard.svg", 15, 20),
-              label: "dashboard",
-            ),
-            BottomNavigationBarItem(
-              icon: bottomIcon("assets/images/icon_home.svg", 15, 25),
-              label: "home",
-            ),
-            BottomNavigationBarItem(
-              icon: bottomIcon("assets/images/logout-outlined.svg", 20, 25),
-              label: "Sign Out",
-            ),
-          ],
-          onTap: (index) {
-            if (index == 1 &&
-                ModalRoute.of(context)!.settings.name != '/Home') {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                RouteName.kHomeScreen,
-                (route) => false,
-              );
-            } else if (index == 0) {
-              if (ModalRoute.of(context)!.settings.name != '/PrayerTimes') {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  RouteName.kPrayerTimes,
-                  (route) => false,
-                );
-              }
-            } else if (index == 2) {
-              // showSignOutDialog(context);
-              // showColoredDialog(
-              //   context,
-              //   "Do you want to sign out?",
-              //   showYesNoButton: true,
-              //   onPressed: () {
-              //     context.read<SignOutCubit>().requestSignOut();
-              //   }
-              // );
-            }
-          },
-          currentIndex: selectedIndex,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.white,
-          selectedFontSize: 12,
+    return Container(
+      height: 80,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 10,
+            spreadRadius: 2,
+          ),
+        ],
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(20),
+          topRight: Radius.circular(20),
         ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(Icons.home, 'Home', 0),
+          _buildNavItem(Icons.access_time, 'Prayer', 1),
+          _buildNavItem(Icons.event, 'Events', 2),
+          _buildNavItem(Icons.power_settings_new_sharp, 'Signout', 3),
+        ],
       ),
     );
   }
 
-  Widget bottomIcon(String iconPath, double width, double height) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 5),
-      child: SvgPicture.asset(
-        iconPath,
-        width: width,
-        height: height,
-        colorFilter: const ColorFilter.mode(
-          Colors.white,
-          BlendMode.srcIn,
-        ),
+  Widget _buildNavItem(IconData icon, String label, int index) {
+    bool isSelected = widget.currentIndex == index;
+    return GestureDetector(
+      onTap: () => widget.onTabSelected(index),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? Colors.blue.withOpacity(0.2)
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              icon,
+              size: 24,
+              color: isSelected ? Colors.blue : Colors.grey,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              color: isSelected ? Colors.blue : Colors.grey,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }

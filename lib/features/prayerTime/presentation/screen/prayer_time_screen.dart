@@ -23,7 +23,7 @@ class _PrayerTimesScreenState extends State<PrayerTimesScreen> {
         ),
         title: const Text('Masjid Connect'),
       ),
-      bottomNavigationBar: CustomBottomNavigation(),
+      // bottomNavigationBar: CustomBottomNavigation(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

@@ -1,293 +1,283 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jamat_app/core/constant/assets_constant.dart';
-import 'package:jamat_app/core/exceptions/exceptions.dart';
-import 'package:jamat_app/features/common/presentation/widget/custome_dropdown_widget.dart';
-import 'package:jamat_app/features/common/presentation/widget/simple_dropdown_widget.dart';
-import 'package:jamat_app/features/home/data/model/response_model/mosque_model.dart';
-import 'package:jamat_app/features/home/presentation/cubit/global_prayer_time_api_cubit/global_prayer_time_api_cubit.dart';
-import 'package:jamat_app/features/home/presentation/cubit/mosque_dropdown_cubit.dart';
-import 'package:jamat_app/features/home/presentation/cubit/validation_cubit/home_cubit.dart';
+import 'package:jamat_app/core/navigation/route_name.dart';
+import 'package:jamat_app/features/common/presentation/widget/custom_bottom_navigation.dart';
+import 'package:jamat_app/features/home/presentation/widget/events_slider_widget.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreens extends StatefulWidget {
+  const HomeScreens({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreens> createState() => _HomeScreensState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  late MosqueDropdownCubit mosqueDropdownCubit;
-  late HomeCubit homeCubit;
-  late Timer timer;
-  callingApi() async {
-    // await mosqueDropdownCubit.requestMosqueDropdown();
-    await context
-        .read<GlobalPrayerTimeApiCubit>()
-        .requestGlobalPrayerTimeApi("college gate, dhaka");
-  }
-
-  @override
-  void initState() {
-    mosqueDropdownCubit = context.read<MosqueDropdownCubit>();
-    homeCubit = context.read<HomeCubit>();
-    callingApi();
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer.cancel();
-    super.dispose();
-  }
-
-  String _formatDuration(Duration d) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    return "${twoDigits(d.inHours)}:${twoDigits(d.inMinutes.remainder(60))}:${twoDigits(d.inSeconds.remainder(60))}";
-  }
+class _HomeScreensState extends State<HomeScreens> {
 
   @override
   Widget build(BuildContext context) {
-    List<Datum> mosqueList = [];
-    return MultiBlocListener(
-      listeners: [
-        BlocListener<MosqueDropdownCubit, MosqueDropdownState>(
-          listener: (context, state) {
-            state.maybeWhen(
-              success: (success) {
-                log("enter into success block ${json.encode(success.data)}");
-                mosqueList = success.data ?? [];
-                homeCubit.changeMosqueDropdownList(mosqueList);
-                // log("the mosque list is $mosqueList");
-              },
-              failed: (failedType, failTrace) {
-                if (failedType is ServerException) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Server Error'),
-                          content: Text(failedType.message),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Close'),
-                            ),
-                          ],
-                        );
-                      });
-                } else if (failedType is NoInternetException) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('No Internet'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Close'),
-                            ),
-                          ],
-                        );
-                      });
-                }
-              },
-              orElse: () => null,
-            );
-          },
+    return Scaffold(
+      appBar: AppBar(
+        title: const Row(
+          children: [
+            Icon(Icons.location_pin, color: Colors.green),
+            SizedBox(width: 8),
+            Text('Masjid Connect'),
+          ],
         ),
-        BlocListener<GlobalPrayerTimeApiCubit, GlobalPrayerTimeApiState>(
-          listener: (context, state) {
-            state.maybeWhen(
-              success: (success) {
-                log("enter into success block ${json.encode(success.data)}");
-                log("the time is : ${json.encode(success.data?.times)}");
-                Map<String, dynamic> map =
-                    json.decode(json.encode(success.data?.times));
-                log("the map of time is: ${map}");
-                homeCubit.updatedPrayerState(map);
-                // timer = Timer.periodic(const Duration(seconds: 1),
-                //     (_) => homeCubit.updatedPrayerState(map));
-                // map.forEach((key, value){
-                //   final parts = value.split(" ");
-                //   final timeParts = parts[0].split(":");
-                //   log("the parts are: $parts");
-                //   log("the time parts are: $timeParts");
-                // });
-                // log("the mosque list is $mosqueList");
-              },
-              failed: (failedType, failTrace) {
-                if (failedType is ServerException) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Server Error'),
-                          content: Text(failedType.message),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Close'),
-                            ),
-                          ],
-                        );
-                      });
-                } else if (failedType is NoInternetException) {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('No Internet'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Close'),
-                            ),
-                          ],
-                        );
-                      });
-                }
-              },
-              orElse: () => null,
-            );
-          },
-        ),
-      ],
-      child: Scaffold(
-        appBar: AppBar(
-          leading: const Image(image: AssetImage(AssetsConstant.logo)),
-          title: const Text('Ibadat-Hub'),
-        ),
-        body: BlocBuilder<HomeCubit, HomeState>(
-          builder: (context, state) {
-            return SizedBox(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              child: Center(
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  // mainAxisAlignment: MainAxisAlignment.center,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications_none),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      // bottomNavigationBar: const CustomBottomNavigation(),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Mosque Header
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // SizedBox(
-                    //   height: 900,
-                    // ),
-                    CustomDropdown(
-                      items: [1, 2, 3],
-                      itemLabel: (item) => item.toString(),
-                      value: mosqueList.isNotEmpty ? mosqueList[0] : null,
-                      onChanged: (value) {},
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Card(
-                      elevation: 2,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Container(
-                        height: 120,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Color(0xfff0B806F),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "${state.nextPrayer} Prayer",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "${state.nextTime}",
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "time left, ${_formatDuration(state.timeRemaining ?? Duration.zero)}",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                    Text(
+                      'AI Nood Jame Mosque',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        children: [
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Center(
-                              child: Text("Fajr"),
-                            ),
-                          ),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Center(
-                              child: Text("Fajr"),
-                            ),
-                          ),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Center(
-                              child: Text("Fajr"),
-                            ),
-                          ),
-                          Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.green,
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: const Center(
-                              child: Text("Fajr"),
-                            ),
-                          ),
-                        ],
+                    SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.location_on, size: 16, color: Colors.grey),
+                        SizedBox(width: 4),
+                        Text(
+                          '123 Mosque Street, City',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+          
+              // Prayer Time Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Asr Prayer',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      '3:45 PM',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Next prayer in 2 hours 15 minutes',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.8),
                       ),
                     ),
                   ],
                 ),
               ),
-            );
-          },
+              const SizedBox(height: 24),
+          
+              // Quick Actions
+              const Text(
+                'Prayer Times',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 12),
+              GridView.count(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 2,
+                childAspectRatio: 1.2,
+                mainAxisSpacing: 16,
+                crossAxisSpacing: 16,
+                // padding: const EdgeInsets.symmetric(horizontal: 16),
+                children: [
+                  _buildPrayerGridItem(
+                    icon: Icons.access_time,
+                    title: 'Prayer Times',
+                    color: Colors.blue,
+                    onTap: () {
+                      // Navigate to prayer times screen
+                    },
+                  ),
+                  _buildPrayerGridItem(
+                    icon: Icons.people,
+                    title: 'Community',
+                    color: Colors.green,
+                    onTap: () {
+                      Navigator.pushNamed(context, RouteName.kCoummunityEvent);
+                      // Navigate to community screen
+                    },
+                  ),
+                  _buildPrayerGridItem(
+                    icon: Icons.chat,
+                    title: 'Ask Imam AI',
+                    color: Colors.orange,
+                    onTap: () {
+                      // Navigate to AI chat screen
+                    },
+                  ),
+                  _buildPrayerGridItem(
+                    icon: Icons.volume_up,
+                    title: 'Voice Guide',
+                    color: Colors.purple,
+                    onTap: () {
+                      // Navigate to voice guide screen
+                    },
+                  ),
+                ],
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     _buildActionButton(
+              //       icon: Icons.access_time,
+              //       label: 'Community',
+              //       color: Colors.blue,
+              //     ),
+              //     _buildActionButton(
+              //       icon: Icons.chat,
+              //       label: 'Ask Imam AI',
+              //       color: Colors.orange,
+              //     ),
+              //     _buildActionButton(
+              //       icon: Icons.volume_up,
+              //       label: 'Voice Guide',
+              //       color: Colors.purple,
+              //     ),
+              //   ],
+              // ),
+              const SizedBox(height: 24),
+          
+              UpcomingEventsSlider(),
+          
+              // Upcoming Events
+              // const Text(
+              //   'Upcoming Events',
+              //   style: TextStyle(
+              //     fontSize: 16,
+              //     fontWeight: FontWeight.bold,
+              //   ),
+              // ),
+              // const SizedBox(height: 12),
+              // _buildEventCard(
+              //   title: 'Friday Prayer',
+              //   date: 'Friday, 1:00 PM',
+              //   action: 'View Details',
+              // ),
+              // const SizedBox(height: 12),
+              // _buildEventCard(
+              //   title: 'Islamic Class',
+              //   date: 'Saturday, 10:00 AM',
+              //   action: 'View',
+              // ),
+            ],
+          ),
+        ),
+      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //     });
+      //   },
+      //   type: BottomNavigationBarType.fixed,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.access_time),
+      //       label: 'Prayer Times',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.event),
+      //       label: 'Events',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.chat),
+      //       label: 'Chat',
+      //     ),
+      //   ],
+      // ),
+    );
+  }
+
+  Widget _buildPrayerGridItem({
+    required IconData icon,
+    required String title,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: color.withOpacity(0.3),
+          ),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(icon, size: 28, color: color),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: color,
+              ),
+            ),
+          ],
         ),
       ),
     );
